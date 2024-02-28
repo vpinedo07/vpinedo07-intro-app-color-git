@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reconocimiento de Voz</title>
+</head>
+<body>
+<button id="start-btn">Iniciar Reconocimiento de Voz</button>
+<div id="output"></div>
+
+<script>
+// Verificar si el navegador soporta la Web Speech API
+if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+    // Crear un objeto de reconocimiento de voz
+    var recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+
+    // Configurar el reconocimiento de voz
+    recognition.lang = 'es-ES'; // Establecer el idioma (opcional)
+
+    // Escuchar eventos
+    recognition.onstart = function() {
+        console.log('Reconocimiento de voz iniciado');
+    }
+
+    recognition.onresult = function(event) {
+        var transcript = event.results[0][0].transcript;
+        document.getElementById('output').textContent = transcript;
+    }
+
+    recognition.onerror = function(event) {
+        console.error('Error en el reconocimiento de voz: ' + event.error);
+    }
+
+    // Iniciar el reconocimiento de voz cuando se hace clic en el botón
+    document.getElementById('start-btn').addEventListener('click', function() {
+        recognition.start();
+    });
+} else {
+    console.error('Tu navegador no soporta la Web Speech API');
+}
+</script>
+</body>
+</html>
